@@ -42,7 +42,7 @@ class BillGQLType(DjangoObjectType, GenericFilterGQLTypeMixin):
             subject_object_dict = {
                 underscore_to_camel(k): v for k, v in list(subject_object_dict.items())
             }
-            if root.subject_type.name == "batch run":
+            if root.subject_type.name == "batch run" and subject_object_dict.get('locationId', None):
                 location = Location.objects.filter(id=subject_object_dict['locationId'], validity_to__isnull=True)
                 location = location.values('code', 'name')
                 subject_object_dict['location'] = {
