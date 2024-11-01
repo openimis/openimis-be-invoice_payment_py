@@ -48,7 +48,7 @@ class DetailPaymentInvoiceGQLType(DjangoObjectType, GenericFilterGQLTypeMixin):
         if not info.context.user.has_perms(InvoiceConfig.gql_invoice_payment_search_perms):
             raise PermissionDenied(_("unauthorized"))
         subject_object_dict = root.subject.__dict__
-        subject_object_dict.pop('_state')
+        subject_object_dict.pop('_state', None)
         subject_object_dict = {
             underscore_to_camel(k): v for k, v in list(subject_object_dict.items())
         }

@@ -38,7 +38,7 @@ class InvoiceGQLType(DjangoObjectType, GenericFilterGQLTypeMixin):
     def resolve_subject(root, info):
         if root.subject:
             subject_object_dict = root.subject.__dict__
-            subject_object_dict.pop('_state')
+            subject_object_dict.pop('_state', None)
             subject_object_dict = {
                 underscore_to_camel(k): v for k, v in list(subject_object_dict.items())
             }
@@ -55,7 +55,7 @@ class InvoiceGQLType(DjangoObjectType, GenericFilterGQLTypeMixin):
         if root.thirdparty:
             thirdparty_object_dict = root.thirdparty.__dict__
 
-            thirdparty_object_dict.pop('_state')
+            thirdparty_object_dict.pop('_state', None)
             thirdparty_object_dict = {
                 underscore_to_camel(k): v for k, v in list(thirdparty_object_dict.items())
             }
@@ -93,7 +93,7 @@ class InvoiceLineItemGQLType(DjangoObjectType, GenericFilterGQLTypeMixin):
     def resolve_line(root, info):
         if root.line:
             line_object_dict = root.line.__dict__
-            line_object_dict.pop('_state')
+            line_object_dict.pop('_state', None)
             key_values = list(line_object_dict.items())
             line_object_dict.clear()
             for k, v in key_values:

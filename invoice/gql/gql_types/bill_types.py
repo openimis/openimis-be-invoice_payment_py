@@ -38,11 +38,11 @@ class BillGQLType(DjangoObjectType, GenericFilterGQLTypeMixin):
     def resolve_subject(root, info):
         if root.subject:
             subject_object_dict = root.subject.__dict__
-            subject_object_dict.pop('_state')
+            subject_object_dict.pop('_state', None)
             subject_object_dict = {
                 underscore_to_camel(k): v for k, v in list(subject_object_dict.items())
             }
-            if root.subject_type.name == "batch run":
+            if root.subject_type.name == "batch run" and subject_object_dict.get('locationId', None):
                 location = Location.objects.filter(id=subject_object_dict['locationId'], validity_to__isnull=True)
                 location = location.values('code', 'name')
                 subject_object_dict['location'] = {
@@ -54,7 +54,7 @@ class BillGQLType(DjangoObjectType, GenericFilterGQLTypeMixin):
     def resolve_thirdparty(root, info):
         if root.thirdparty:
             thirdparty_object_dict = root.thirdparty.__dict__
-            thirdparty_object_dict.pop('_state')
+            thirdparty_object_dict.pop('_state', None)
             thirdparty_object_dict = {
                 underscore_to_camel(k): v for k, v in list(thirdparty_object_dict.items())
             }
@@ -92,7 +92,7 @@ class BillItemGQLType(DjangoObjectType, GenericFilterGQLTypeMixin):
     def resolve_line(root, info):
         if root.line:
             line_object_dict = root.line.__dict__
-            line_object_dict.pop('_state')
+            line_object_dict.pop('_state', None)
             key_values = list(line_object_dict.items())
             line_object_dict.clear()
             for k, v in key_values:
